@@ -10,7 +10,12 @@ run collection
 go to project
 `npm i`
 
-## Run test
+## Run test FE
 `npm run cypress:open`
 or 
 `npm run cypress:runFront`
+
+## Run test BE
+`npm run cypress:open`
+or 
+`npm run cypress:runBack`
