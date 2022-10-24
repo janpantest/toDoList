@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
-    "cypress:runFront": "cypress run --spec cypress/e2e/frontEnd.cy.js"
+    "cypress:runFront": "cypress run --spec cypress/e2e/frontEnd.cy.js",
+    "cypress:runBack": "cypress run --spec cypress/e2e/backEnd.cy.js"
   },
   "keywords": [],
   "author": "",
