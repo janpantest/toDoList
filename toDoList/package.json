@@ -1,0 +1,19 @@
+{
+  "name": "cypressjs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run",
+    "cypress:runFront": "cypress run --spec cypress/e2e/frontEnd.cy.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cypress": "^10.8.0",
+    "cypress-xpath": "^2.0.1"
+  }
+}

@@ -1,0 +1,266 @@
+{
+	"info": {
+		"_postman_id": "16f2798a-fe54-4529-9407-86c285a95afa",
+		"name": "ToDoList",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23758509"
+	},
+	"item": [
+		{
+			"name": "getToDoGET",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Correct status\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const taskName = (Math.random() + 1).toString(36).substring(7);\r",
+							"console.log(taskName)\r",
+							"pm.environment.set(\"taskName\", taskName);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "accept",
+						"value": "text/plain"
+					}
+				],
+				"url": {
+					"raw": "https://localhost:5001/api/ToDoItems",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"ToDoItems"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "toDoPOST",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Create task\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"    const jsonData = pm.response.json();\r",
+							"    console.log(jsonData.id)\r",
+							"    pm.environment.set(\"specificTaskId\", jsonData.id)   \r",
+							"\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"//   const entry = (Math.random() + 1).toString(36).substring(7);\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "text/plain"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"text\":\"{{taskName}}\"}"
+				},
+				"url": {
+					"raw": "https://localhost:5001/api/ToDoItems",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"ToDoItems"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "specificTaskGET",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Get created task\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    const jsonData = pm.response.json();\r",
+							"\r",
+							"    pm.environment.set('idToCheck', jsonData.id);\r",
+							"    pm.environment.set('nameOfTask', jsonData.text);\r",
+							"    \r",
+							"       function compareId(specificTaskId, idToCheck) {\r",
+							"        return (specificTaskId === idToCheck) ? true : false;\r",
+							"        }\r",
+							"\r",
+							"        console.log(compareId(pm.environment.get('specificTaskId'), pm.environment.get('idToCheck')));\r",
+							"\r",
+							"    //day after\r",
+							"        function compareTaskName(taskName, taskNameToCheck) {\r",
+							"        return (taskName === taskNameToCheck) ? true : false;\r",
+							"        }\r",
+							"\r",
+							"    console.log(compareTaskName(pm.environment.get('taskName'), pm.environment.get('nameOfTask')));\r",
+							"\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "accept",
+						"value": "text/plain"
+					}
+				],
+				"url": {
+					"raw": "https://localhost:5001/api/ToDoItems/{{specificTaskId}}",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"ToDoItems",
+						"{{specificTaskId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "toDoDELETE",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 204\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "accept",
+						"value": "*/*"
+					}
+				],
+				"url": {
+					"raw": "https://localhost:5001/api/ToDoItems/{{specificTaskId}}",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"ToDoItems",
+						"{{specificTaskId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "checkAfterDELETE",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Check deleted task\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"    const jsonData = pm.response.json();\r",
+							"    \r",
+							"    function compare(idToCheck) {\r",
+							"    return (idToCheck = 'Not found') ? true : false;\r",
+							"    }\r",
+							"\r",
+							"    console.log(compare(jsonData.title));\r",
+							"\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "accept",
+						"value": "text/plain"
+					}
+				],
+				"url": {
+					"raw": "https://localhost:5001/api/ToDoItems/{{specificTaskId}}",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"ToDoItems",
+						"{{specificTaskId}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
